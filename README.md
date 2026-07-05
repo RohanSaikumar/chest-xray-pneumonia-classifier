@@ -38,7 +38,7 @@ Instead, robustness is improved through augmentation and regularization.</h6>
 
 <h4>Results</h4>
 <ul>
-<li><b>Test Accuracy: 82.34%<b><li>
+<li><b>Test Accuracy: 82.34%<b></li>
 </ul>
 
 <h4>Author</h4>
