@@ -8,8 +8,8 @@ from src.model import build_model
 
 WEIGHTS_PATH = "model_weights.h5"
 
-st.title("Chest X-ray COVID Classifier")
-st.write("Upload a chest X-ray image to classify it as COVID or Normal.")
+st.title("Chest X-ray Pneumonia Classifier")
+st.write("Upload a chest X-ray image to classify it as Pneumonia or Normal.")
 
 model, _ = build_model()
 
@@ -34,10 +34,14 @@ if uploaded_file is not None:
         resized = image.resize((224, 224))
         array = np.array(resized).astype("float32")
         array = preprocess_input(array)
+        # match the ImageDataGenerator's samplewise_center + samplewise_std_normalization
+        # used during training (src/data.py), applied after preprocess_input
+        array = array - np.mean(array)
+        array = array / (np.std(array) + 1e-6)
         batch = np.expand_dims(array, axis=0)
 
         prediction = model.predict(batch)[0][0]
-        label = "COVID" if prediction >= 0.5 else "Normal"
+        label = "Pneumonia" if prediction >= 0.5 else "Normal"
 
         st.subheader(f"Prediction: {label}")
         st.write(f"Confidence score: {prediction:.4f}")
